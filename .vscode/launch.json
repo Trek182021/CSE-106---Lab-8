@@ -1,0 +1,13 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "C/C++ Runner: Debug Session",
+      "type": "lldb",
+      "request": "launch",
+      "args": [],
+      "cwd": "/Users/dravennova/Desktop/CSE-106---Lab-8",
+      "program": "/Users/dravennova/Desktop/CSE-106---Lab-8/build/Debug/outDebug"
+    }
+  ]
+}
