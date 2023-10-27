@@ -2,7 +2,7 @@
 
 ## MACOS
 1. Create VirtualEnv for Flask with name `ditto`
-  - > virtualenv ditto
+> virtualenv ditto
 
 2. Activate VirtualEnv
 > source bin/activate
