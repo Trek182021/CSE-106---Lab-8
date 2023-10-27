@@ -1,4 +1,4 @@
-# In order to run the backend, you need to run the following command
+# In order to run the backend, you need to run the following commands
 
 ## MACOS
 1. Create VirtualEnv for Flask with name `ditto`
