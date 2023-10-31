@@ -4,7 +4,7 @@ from flask_sqlalchemy import SQLAlchemy
 from flask_admin import Admin
 from flask_admin.contrib.sqla import ModelView
 from sqlalchemy import func, text
-from flask_login import current_user, login_user
+from flask_login import current_user, login_user, logout_user, login_required
 # import get_routes
 
 
@@ -158,8 +158,8 @@ app.secret_key = 'keep it secret, keep it safe'
 def load_user(user_id):
     return User.get_id(user_id)
 
-@app.route('/signin', methods= ['POST'])
-def signin():
+@app.route('/login', methods= ['POST'])
+def login():
     if current_user.is_authenticated:
         return redirect(url_for('index'))
     user = User.query.filter_by(username=request.json['username']).first()
@@ -167,6 +167,12 @@ def signin():
         return redirect(url_for('login'))
     login_user(user)
     return redirect(url_for('index'))
+
+@app.route('/logout')
+@login_required
+def logout():
+    logout_user()
+    return redirect(url_for('login'))
 
 @app.route('/studentCourses/<int:id_>', methods=['GET'])
 def getStudentCourses(id_):
