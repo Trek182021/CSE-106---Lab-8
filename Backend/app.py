@@ -1,9 +1,10 @@
-from flask import Flask, jsonify, request, flash
+from flask import Flask, jsonify, request, flash, redirect, url_for
 from flask_cors import CORS, cross_origin
 from flask_sqlalchemy import SQLAlchemy
 from flask_admin import Admin
 from flask_admin.contrib.sqla import ModelView
 from sqlalchemy import func, text
+from flask_login import current_user, login_user
 # import get_routes
 
 
@@ -83,6 +84,8 @@ class User(db.Model):
         return f'<User {self.name}>'
     def serialize(self):
         return {'name': self.name, 'grade': self.grade}
+    def check_password(self, password):
+        return self.password == password
     
 class Role(db.Model):
     id = db.Column(db.Integer(), primary_key=True)
@@ -144,6 +147,26 @@ admin.add_view(CourseGradeView(CourseGrade, db.session))
 admin.add_view(RoleView(Role, db.session))
 admin.add_view(CourseView(Course, db.session))
 admin.add_view(UserView(User, db.session))
+
+
+login_manager = LoginManager()
+login_manager.init_app(app)
+login_manager.login_view = 'login'
+app.secret_key = 'keep it secret, keep it safe'
+
+@login_manager.user_loader
+def load_user(user_id):
+    return User.get_id(user_id)
+
+@app.route('/signin', methods= ['POST'])
+def signin():
+    if current_user.is_authenticated:
+        return redirect(url_for('index'))
+    user = User.query.filter_by(username=request.json['username']).first()
+    if user is None or not user.check_password(request.json['password']):
+        return redirect(url_for('login'))
+    login_user(user)
+    return redirect(url_for('index'))
 
 @app.route('/studentCourses/<int:id_>', methods=['GET'])
 def getStudentCourses(id_):
