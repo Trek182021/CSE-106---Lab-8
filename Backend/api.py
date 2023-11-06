@@ -16,14 +16,14 @@ def getStudentCourses(id_):
 
     return jsonify(res)
 
-@api.route('/courses', methods=['GET'])
-def getCourses():
+@api.route('/courses/<int:student_id>', methods=['GET'])
+def getCourses(student_id):
     res = []
-    query = text('SELECT course.name as courseName, user.name as teacher, course.time as time, (course.capacity) as capacity, CASE when c2.enrolledNum THEN c2.enrolledNum ELSE 0 END as enrolledNum FROM course, user  LEFT JOIN ( SELECT course_id, count(*) as enrolledNum FROM course_grade cg GROUP BY cg.course_id ) c2 ON c2.course_id = course.id WHERE course.teacher_id = user.id')
+    query = text('SELECT course.name as courseName, user.name as teacher, course.time as time, (course.capacity) as capacity, CASE WHEN c2.enrolledNum THEN c2.enrolledNum ELSE 0 END as enrolledNum, CASE WHEN cg.u_id != 0 THEN 1 ELSE 0 END as isSignedUp FROM course, user LEFT JOIN ( SELECT course_id, count(*) as enrolledNum FROM course_grade cg GROUP BY cg.course_id ) c2 ON c2.course_id = course.id LEFT JOIN ( SELECT course_id as id, user_id as u_id FROM course_grade WHERE user_id = :_user_id ) cg ON cg.id = course_id WHERE course.teacher_id = user.id')
     with db.engine.connect() as conn:
-        response = conn.execute(query)
+        response = conn.execute(query, {'_user_id': student_id})
         for i in response:
-            res.append({'Course': i[0], 'Teacher': i[1], 'Time': i[2], 'Capacity': i[3], 'EnrolledNum': i[4]})
+            res.append({'Course': i[0], 'Teacher': i[1], 'Time': i[2], 'Capacity': i[3], 'EnrolledNum': i[4], 'IsSignedUp': i[5]})
     return jsonify(res)
 
 @api.route('/courses/<int:course_id>', methods=['GET'])
