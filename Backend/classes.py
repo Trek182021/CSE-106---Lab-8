@@ -2,6 +2,8 @@ from flask import flash
 from flask_admin.contrib.sqla import ModelView
 from flask_admin import Admin
 from flask_sqlalchemy import SQLAlchemy
+from flask_login import UserMixin
+
 
 db = SQLAlchemy()
 admin = Admin()
@@ -49,7 +51,7 @@ class Course(db.Model):
     def __str__(self):
         return self.name
     
-class User(db.Model):
+class User(db.Model, UserMixin):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String, unique=True, nullable=False)
     username = db.Column(db.String, unique=True, nullable=False)
@@ -67,6 +69,8 @@ class User(db.Model):
         return f'<User {self.name}>'
     def serialize(self):
         return {'name': self.name, 'grade': self.grade}
+    def isTeacher(self):
+        return self.role_id == 2;
     
 class Role(db.Model):
     id = db.Column(db.Integer(), primary_key=True)
@@ -123,6 +127,7 @@ class CourseGradeView(ModelView):
         test = db.Query(CourseGrade).filter_by(user_id=form.user.data.id, course_id=form.course.data.id).first()
         if (test):
             flash("Error: Student Grade already exists.")
+            
                       
 admin.add_view(CourseGradeView(CourseGrade, db.session))
 admin.add_view(RoleView(Role, db.session))
