@@ -6,7 +6,7 @@ const signOutElement = document.querySelector('.signOut');
 
 function signOut()
 {
-    window.location.href = "login.html"; //return to login html page
+    window.location.href = "signIn.html"; //return to login html page
 }
 
 if (signOutElement)
@@ -76,6 +76,11 @@ document.addEventListener('click', function (event) { // add classes and delete 
         
     }
 });
+
+function signUp() 
+{
+    fetch('')
+}
 
 function addCourseToYourClasses(course)
 {
