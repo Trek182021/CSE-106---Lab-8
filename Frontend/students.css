@@ -2,9 +2,9 @@ body
 {
     margin: auto;
     min-height: 100vh;           /* Make sure the body takes at least the full height of the viewport */
-    display: flex;               /* Turn body into a flex container */
-    justify-content: center;     /* Center content horizontally */
-    align-items: center;         /* Center content vertically */
+    display: flex;               /*wrap items */
+    justify-content: center;     
+    align-items: center;         
 }
 
 .mainBox 
@@ -19,7 +19,7 @@ body
 
 .header
 {
-    display: flex;            /* This will set up a flex container */
+    display: flex;            
     justify-content: space-between; 
     align-items: center;      
     gap: 1rem;               
@@ -42,16 +42,16 @@ body
 
 .signOut:hover
 {
-    background-color: #da190b; /* Darken the background color on hover */
+    background-color: #da190b; 
 }
 
 .contentBox
 {
     background-color:#4169E1;
-    width: 90%;               /* Box width is 90% of the mainBox */
+    width: 90%;               
     height: calc(100% - 5rem);  /* 100% of the mainBox height minus the header height */
     margin: 1rem auto;        /* Center the content box and add some space at the top and bottom */
-    border: 2px solid black;   /* Add a border around the content box */
+    border: 2px solid black;   
 }
 
 .tabs
@@ -69,24 +69,23 @@ body
     border: 1px solid black;
     border-bottom: none;
     outline: none;
-    background-color: #A7C7E7; /* Default background color */
-    color: black; /* Default text color */
+    background-color: #A7C7E7; 
+    color: black;
 }
 
 .tab.active
 {
-    background-color: #4169E1; /* Active background color */
-    color: white; /* Active text color */
+    background-color: #4169E1; 
+    color: white; 
 }
 
-/* Define the hover effect */
+
 .tab:hover
 {
     background-color: darkblue; 
     color: white;
 }
 
-/*tables*/
 
 .centered-table th
 {
@@ -149,26 +148,22 @@ th
 
 
 
-
-/* Style for the "Your Classes" tab content */
 #yourClassesContent
 {
-    display: none; /* Hide the content by default */
+    display: none; /* hide the content by default */
 }
 
-/* Style for the "Add Classes" tab content */
+
 #addClassesContent
 {
     display: none; /* Hide the content by default */
 }
 
-/* Style for the "Your Classes" tab when it's active */
 .tab.active#yourCoursesTab ~ #yourClassesContent
 {
     display: block; /* Show the content when the tab is active */
 }
 
-/* Style for the "Add Classes" tab when it's active */
 .tab.active#addCoursesTab ~ #addClassesContent
 {
     display: block; /* Show the content when the tab is active */
