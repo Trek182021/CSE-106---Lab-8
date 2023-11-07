@@ -53,7 +53,7 @@ function populateAddCoursesTab() // populate AddCourses tab by fetching api data
         .then(response => response.json())
         .then(data => {
             const table = document.querySelector('#addClassesContent .centered-table tbody');
-            table.innerHTML = '';
+            table.innerHTML = ''; //clear content for new content
 
             data.forEach(course => { //iterates over each course object and populate for each row
                 const row = document.createElement('tr');
