@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Dashboard</title>
+    <link rel="stylesheet" href="students.css">
+</head>
+
+<body>
+    <div class="mainBox">
+
+        <div class= "header"> <!--header for greeting, university name, and sign out button-->
+            <div class="userGreeting">
+                {{ student_id }}
+            </div>
+            <div>
+                ACME UNIVERSITY
+            </div>
+            <div class="signOut">
+                Sign Out
+            </div>
+        </div>
+
+        <div class="contentBox">
+            <div class="tabs">
+                <div class="tab" id="yourCoursesTab">Your Courses</div>
+                <div class="tab" id="addCoursesTab">Add Courses</div>
+            </div>
+            <div class="tab-content" id="yourClassesContent">
+                <table class="centered-table">
+                    <thead>
+                        <tr>
+                            <th>Course Name</th>
+                            <th>Teacher</th>
+                            <th>Time</th>
+                            <th>Students Enrolled</th>
+                            <th>Capacity</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tbody>
+
+                        </tbody>
+                    </tbody>
+                </table>
+            </div>
+            
+            <div class="tab-content" id="addClassesContent">
+                <table class="centered-table">
+                    <thead>
+                        <tr>
+                            <th>Course Name</th>
+                            <th>Teacher</th>
+                            <th>Time</th>
+                            <th>Students Enrolled</th>
+                            <th>Capacity</th>
+                            <th>Add Class</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tbody>
+                            
+                        </tbody>
+                </table>
+            </div>
+        </div>
+
+
+
+    </div>
+    <script src="students.js"></script>
+</body>
+
+</html>

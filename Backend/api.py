@@ -13,7 +13,6 @@ def getStudentCourses(id_):
     studentCourses = db.session.query(Course.name, User.name, Course.time, enrolledNum.c.num, Course.capacity).join(User).join(enrolledNum).filter(CourseGrade.course_id == Course.id, Course.teacher_id == User.id, CourseGrade.course_id == enrolledNum.c.id, CourseGrade.user_id == id_).all()
     for i in studentCourses:
         res.append({'Course': i[0], 'Teacher': i[1], 'Time': i[2], 'EnrolledNum': i[3], 'Capacity': i[4]})
-
     return jsonify(res)
 
 @api.route('/courses/<int:student_id>', methods=['GET'])
@@ -25,6 +24,29 @@ def getCourses(student_id):
         for i in response:
             res.append({'Course': i[0], 'Teacher': i[1], 'Time': i[2], 'Capacity': i[3], 'EnrolledNum': i[4], 'IsSignedUp': i[5]})
     return jsonify(res)
+
+@api.route('/signup/<int:course_id>', methods=['POST', 'DELETE'])
+def courseSignup(course_id):
+    print("COURSE ID", course_id)
+    if request.method == 'POST':
+        data = request.get_json()
+        print(data)
+        insertToCourseGrade = text("INSERT INTO course_grade (user_id, course_id, grade) VALUES (:user_id, :course_id, :grade);")
+        insertToStudentCourseGrade = text("INSERT INTO student_course_grade (student_id, course_id, grade) VALUES (:user_id, :course_id, :grade);")
+        with db.engine.connect() as conn:
+            conn.execute(insertToCourseGrade, {'course_id': course_id, 'grade': data['grade'], 'user_id': data['user_id']})
+            conn.execute(insertToStudentCourseGrade, {'course_id': course_id, 'grade': data['grade'], 'user_id': data['user_id']})
+            conn.commit()
+        return data
+    elif request.method == 'DELETE':
+        data = request.get_json()
+        deleteCourseGrade = text("DELETE FROM course_grade WHERE course_id = :_course_id AND user_id = :_user_id")
+        deleteStudentCourseGrade = text("DELETE FROM student_course_grade WHERE student_id = :_student_id and course_id = :_course_id")
+        with db.engine.connect() as conn:
+            conn.execute(deleteCourseGrade, {'_course_id': course_id, '_user_id': data['user_id']})
+            conn.execute(deleteStudentCourseGrade, {'_course_id': course_id, '_student_id': data['user_id']})
+            conn.commit()
+        return data
 
 @api.route('/courses/<int:course_id>', methods=['GET'])
 def getStudents(course_id):
@@ -45,7 +67,6 @@ def getTeacherCourses(teacher_id):
         for i in response:
             res.append({'Course': i[0], 'Teacher': i[1], 'Time': i[2], 'EnrolledNum': i[3], 'Capacity': i[4]})
     return jsonify(res)
-    
 
 @api.route('/signup/<int:course_id>', methods=['POST', 'DELETE'])
 def courseSignup(course_id):
@@ -78,4 +99,3 @@ def updateGrade(course_id):
         conn.execute(query, {'grade': data['grade'], 'course_id': course_id, 'user_id': data['user_id']})
         conn.commit()
     return "200"
-
