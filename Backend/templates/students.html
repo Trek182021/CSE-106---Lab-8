@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Dashboard</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles/students.css') }}">
+</head>
+
+<body>
+    <div class="mainBox">
+
+        <div class= "header"> <!--header for greeting, university name, and sign out button-->
+            <div class="userGreeting">
+            </div>
+            <div>
+                ACME UNIVERSITY
+            </div>
+            <div class="signOut">
+                Sign Out
+            </div>
+        </div>
+
+        <div class="contentBox">
+            <div class="tabs">
+                <div class="tab active" id="yourCoursesTab">Your Courses</div>
+                <div class="tab" id="addCoursesTab">Add Courses</div>
+            </div>
+            <div class="tab-content" id="yourClassesContent">
+                <table class="centered-table centered-table tbody">
+                    <thead>
+                        <tr>
+                            <th>Course Name</th>
+                            <th>Teacher</th>
+                            <th>Time</th>
+                            <th>Students Enrolled</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for course in studentCourses %}
+                            <tr>
+                                <td>{{course.Course}}</td>
+                                <td>{{course.Teacher}}</td>
+                                <td>{{course.Time}}</td>
+                                <td>{{course.EnrolledNum}}/{{course.Capacity}}</td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            
+            <div class="tab-content" id="addClassesContent">
+                <table class="centered-table">
+                    <thead>
+                        <tr>
+                            <th>Course Name</th>
+                            <th>Teacher</th>
+                            <th>Time</th>
+                            <th>Students Enrolled</th>
+                            <th>Add Class</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for course in allCourses %}
+                            <tr>
+                                <td>{{ course['Course'] }}</td>
+                                <td>{{ course['Teacher'] }}</td>
+                                <td>{{ course['Time'] }}</td>
+                                <td>{{ course['EnrolledNum'] }}/{{ course['Capacity'] }}</td>
+                                <td>
+                                {% if course['IsSignedUp'] == 0 %}
+                                <form method="POST" action="{{ url_for('api.courseSignup', course_id = course.id)}}">
+                                    <!-- <input type="text" value="{{ course.Id }}" name="course_id" hidden> -->
+                                    <input type="text" value="{{ current_user.id }}" name="user_id" hidden>
+                                    <button type="submit" class="addClass" id="{{ course.course_id }}">Add Class</button>
+                                </form>
+                                {% else %}
+                                <form method="POST" action="{{ url_for('api.courseDrop', course_id = course.id)}}">
+                                    <!-- <input type="text" value="{{ course.Id }}" name="course_id" hidden> -->
+                                    <input type="text" value="{{ current_user.id }}" name="user_id" hidden>
+                                    <button type="submit" class="deleteClass">Delete Class</button>
+                                </form>
+                                {% endif %}
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+
+
+    </div>
+    <script src="{{ url_for('static', filename='script/students.js') }}"></script>
+</body>
+
+</html>

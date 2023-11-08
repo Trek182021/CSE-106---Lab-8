@@ -4,7 +4,9 @@ from classes import db, admin, User
 from api import api
 from flask import Flask, request, redirect, url_for
 from flask_cors import CORS
-from flask_login import current_user, login_user, logout_user, LoginManager
+from flask_login import current_user, login_user, logout_user, LoginManager, login_required
+from api import *
+import json
 # import get_routes
 
 app = Flask(__name__)
@@ -22,20 +24,16 @@ login_manager.init_app(app)
 login_manager.login_view = 'login'
 app.secret_key = 'keep it secret, keep it safe'
 
+
+@login_manager.unauthorized_handler
+def unauthorized():
+    flash("You are not authenticated. Please login")
+    return redirect(url_for("home"))
+
+
 @login_manager.user_loader
 def load_user(user_id):
     return User.query.get(user_id)
-
-@app.route('/signin', methods= ['POST'])
-def signin():
-    if current_user.is_authenticated:
-        return redirect(url_for('index'))
-    user = User.query.filter_by(username=request.json['username']).first()
-    if user is None or not user.check_password(request.json['password']):
-        return redirect(url_for('login'))
-    login_user(user)
-    return redirect(url_for('index'))
-
 
 @app.route('/register', methods=["GET", "POST"])
 def register():
@@ -60,7 +58,9 @@ def register():
 def login():
     # If a post request was made, find the user by 
     # filtering for the username
+    print("LOG", request.method)
     if request.method == "POST":
+        print("POSTTT")
         user = User.query.filter_by(
             username=request.form.get("username")).first()
         # Check if the password entered is the 
@@ -68,13 +68,18 @@ def login():
         if user.password == request.form.get("password"):
             # Use the login_user method to log in the user
             login_user(user)
-            return redirect(url_for("home"))
+            print("SUCCESS!!!")
+            if (user.role.name == "Student"):
+                return redirect(url_for('studentsPage'))
+            elif (user.role.name == "Admin"):
+                return redirect("/admin")
         else:
             flash("Invalid username or password")
             print("INVALID!!!!!!!!!!!!!!")
+
         # Redirect the user back to the home
         # (we'll create the home route in a moment)
-    return render_template("login.html")
+    # return render_template("login.html")
 
 @app.route("/logout")
 def logout():
@@ -83,7 +88,16 @@ def logout():
 
 @app.route("/")
 def home():
-    return render_template("home.html")
+    return render_template("login.html")
+
+@app.route("/students")
+@login_required
+def studentsPage():
+    data = getCourses(current_user.id)
+    data2 = getStudentCourses(current_user.id)
+    studentCourses = data2.json
+    allCourses = data.json
+    return render_template("students.html", studentCourses=studentCourses, allCourses=allCourses)
 
 if __name__ == '__main__':
     app.run()

@@ -1,13 +1,29 @@
-from flask import flash
+from flask import flash, redirect, url_for, request
 from flask_admin.contrib.sqla import ModelView
-from flask_admin import Admin
+from flask_admin import Admin, AdminIndexView, expose
 from flask_sqlalchemy import SQLAlchemy
-from flask_login import UserMixin
+from flask_login import UserMixin, current_user, login_required
 
+class MyAdminIndexView(AdminIndexView):
+    @expose('/')
+    @login_required
+    def index(self):
+        print("TESTTTT")
+        if not current_user.is_authenticated:
+            flash('You are not authorized to access this page', 'error')
+            return redirect('/')
+        # import pdb;pdb.set_trace()
+        if not current_user.role.name == 'Admin':
+            return redirect('/')
+        return super(MyAdminIndexView, self).index()
 
+        
 db = SQLAlchemy()
-admin = Admin()
+admin = Admin(index_view=MyAdminIndexView(), template_mode='bootstrap3')
+# admin = Admin()
 
+
+        
 student_course_grade = db.Table(
     'student_course_grade',
     db.Column('student_id', db.Integer, db.ForeignKey('user.id')),
@@ -83,15 +99,18 @@ class Role(db.Model):
     def __repr__(self):
         return f'<User {self.name}>'
 
-class RoleView(ModelView):
+class AdminView(ModelView):
+    def is_accessible(self):
+        return current_user.is_authenticated and current_user.role.name == "Admin";
+class RoleView(AdminView):
     form_columns=["name", "description"]
     column_list=["name", "description", "users"]
     
-class UserView(ModelView):
+class UserView(AdminView):
     form_columns = ['name', 'username', 'password', 'role']
     column_list= ['username', 'role', 'courses']
     
-class CourseView(ModelView):
+class CourseView(AdminView):
     form_columns=['name', 'teacher', 'time', 'capacity']
     column_list=['name', 'teacher', 'time', 'capacity']
     form_args = {
@@ -104,7 +123,7 @@ class CourseView(ModelView):
         if (course):
             flash("Error: Course already exists.")
     
-class CourseGradeView(ModelView):
+class CourseGradeView(AdminView):
     form_columns = ["user", "course", "grade"]
     column_list = ['user', 'course', 'grade']
     form_args = {
