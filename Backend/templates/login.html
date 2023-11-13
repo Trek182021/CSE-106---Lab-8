@@ -9,29 +9,28 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet">
 </head>
 <body>
-	<nav>
-	<ul>
-		<li><a href="/login">Login</a></li>
-		<li><a href="/register">Create account</a></li>
-	</ul>
-	</nav>
-    {% for message in get_flashed_messages() %}
-    <div>
-        <div class="alert alert-warning" id="div_flash" style="max-width: 25rem;">
-            <button type="button" class="btn" data-dismiss="alert" onclick="removeFlash()">&times; {{ message }}</button>
-        </div>
-    </div>
-    {% endfor %}
+    
     <div class='signinbox'>
+        <div class="error-messages">
+            {% for message in get_flashed_messages() %}
+                <div>
+                    <div class="alert alert-warning" id="div_flash" style="max-width: 25rem;">
+                        <button type="button" class="btn" data-dismiss="alert" onclick="removeFlash()">&times; {{ message }}</button>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
 	    <h1>Sign in</h1>
         
+        <div class="login-form">
         <form action="{{ url_for('login') }}" method="post" class="screen-1">
             <label for="username">Username</label>
             <input type="text" id="username" name="username" /> <br />
             <label for="password">Password</label>
-            <input type="text" id="password" name="password" /> <br />
+            <input type="password" id="password" name="password" /> <br />
             <button type="submit">Log in</button>
         </form>
+        </div>
     </div>
 </body>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>

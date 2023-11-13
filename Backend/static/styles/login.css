@@ -2,7 +2,28 @@
     border: 3px solid black;
     margin: auto;
     width: 30%;
-    padding: 10px;
+    padding: 50px;
     border-radius: 5px;
     text-align: center;
+}
+
+body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+
+.login-form {
+    text-align: start;
+}
+
+.login-form input {
+    width: 100%;
+}
+
+.login-form button {
+    margin-top: 12px;
+    padding: 5px 12px;
 }
