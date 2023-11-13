@@ -62,11 +62,11 @@ def courseDrop(course_id):
 @api.route('/courseGrade/<int:course_id>', methods=['GET'])
 def getStudents(course_id):
     res = []
-    query = text('SELECT u2.name, u1.name, course_grade.grade, u1.id FROM course, course_grade, user u1, user u2 WHERE course.teacher_id = u2.id AND course.id = course_grade.course_id AND course_grade.user_id = u1.id AND course.id = :course_id;')
+    query = text('SELECT u2.name, u1.name, course_grade.grade, u1.id, course.name FROM course, course_grade, user u1, user u2 WHERE course.teacher_id = u2.id AND course.id = course_grade.course_id AND course_grade.user_id = u1.id AND course.id = :course_id;')
     with db.engine.connect() as conn:
         response = conn.execute(query, {'course_id': course_id})
         for i in response:
-            res.append({'Teacher': i[0], 'Student': i[1], 'Grade': i[2], 'Student_Id': i[3]})
+            res.append({'Teacher': i[0], 'Student': i[1], 'Grade': i[2], 'Student_Id': i[3], 'Course': i[4]})
     return jsonify(res)
 
 @api.route('/teacherCourses/<int:teacher_id>', methods=['GET'])
