@@ -57,7 +57,7 @@
                             <th>Teacher</th>
                             <th>Time</th>
                             <th>Students Enrolled</th>
-                            <th>Add Class</th>
+                            <th>Actions</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -69,17 +69,22 @@
                                 <td>{{ course['EnrolledNum'] }}/{{ course['Capacity'] }}</td>
                                 <td>
                                 {% if course['IsSignedUp'] == 0 %}
-                                <form method="POST" action="{{ url_for('api.courseSignup', course_id = course.id)}}">
-                                    <!-- <input type="text" value="{{ course.Id }}" name="course_id" hidden> -->
-                                    <input type="text" value="{{ current_user.id }}" name="user_id" hidden>
-                                    <button type="submit" class="addClass" id="{{ course.course_id }}">Add Class</button>
-                                </form>
+                                    {% if course['EnrolledNum'] == course['Capacity'] %}
+                                    <p> Class is Full!</p>
+                                    {% else %}
+                                    <form method="POST" action="{{ url_for('api.courseSignup', course_id = course.id)}}">
+                                        <!-- <input type="text" value="{{ course.Id }}" name="course_id" hidden> -->
+                                        <input type="text" value="{{ current_user.id }}" name="user_id" hidden>
+                                        <button type="submit" class="addClass" id="{{ course.course_id }}">Add Class</button>
+                                    </form>
+                                    {% endif %}
+
                                 {% else %}
-                                <form method="POST" action="{{ url_for('api.courseDrop', course_id = course.id)}}">
-                                    <!-- <input type="text" value="{{ course.Id }}" name="course_id" hidden> -->
-                                    <input type="text" value="{{ current_user.id }}" name="user_id" hidden>
-                                    <button type="submit" class="deleteClass">Delete Class</button>
-                                </form>
+                                    <form method="POST" action="{{ url_for('api.courseDrop', course_id = course.id)}}">
+                                        <!-- <input type="text" value="{{ course.Id }}" name="course_id" hidden> -->
+                                        <input type="text" value="{{ current_user.id }}" name="user_id" hidden>
+                                        <button type="submit" class="deleteClass">Delete Class</button>
+                                    </form>
                                 {% endif %}
                                 </td>
                             </tr>

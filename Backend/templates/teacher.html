@@ -1,0 +1,52 @@
+<!DOCTYPE html>    
+<html>
+    <head>
+        <link rel="stylesheet" href="{{ url_for('static', filename='styles/teacher.css') }}">
+    </head>
+
+    <body>
+        <div class = "outerbox">
+            <h1>ACME University</h1>
+            <p id = "namedisplay" style="text-align: left;"> Welcome {{current_user.name}}!</p>
+            <p style="text-align: right;"><a href="{{url_for('logout')}}">Sign Out</a></p>
+
+            <div class = "innerbox">
+                <h1>Your Courses</h1>
+
+                <div>
+                    <table id ="courseinfo">
+                        <thead>
+                            <tr>
+                                <th>Course Name</th>
+                                <th>Teacher</th>
+                                <th>Time</th>
+                                <th>Students Enrolled</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+
+                        </tbody>
+                        <tr>
+                            <!-- <td><a href="grades.html"> CS 106 </a></td>
+                            <td> TeacherName</td>
+                            <td> MWF 2:00-2:50 PM </td>
+                            <td> 4/10 </td> -->
+                            {% for course in courses %}
+                                <tr>
+                                    <td><a href="{{ url_for('courseGradesPage', course_id= course.id)}}"> {{course.Course}} </a></td>
+                                    <td>{{course.Teacher}}</td>
+                                    <td>{{course.Time}}</td>
+                                    <td>{{course.EnrolledNum}}/{{course.Capacity}}</td>
+                                </tr>
+                            {% endfor %}
+                        </tr>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+    <!-- <p> test!!! </p> -->
+
+    <!-- <script src="{{ url_for('static', filename='script/teacher.js') }}"></script> -->
+    </body>
+</html>

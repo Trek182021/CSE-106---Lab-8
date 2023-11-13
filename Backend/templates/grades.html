@@ -1,0 +1,67 @@
+<!DOCTYPE html>    
+<html>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles/grades.css') }}">
+    
+    <head>
+    </head>
+
+    <body>
+        <div class = "outerbox">
+            <h1>ACME University</h1>
+            <p id="namedisplay" style="text-align: left;"> Welcome {{current_user.name}}!</p>
+            <p style="text-align: right;"><a href="{{ url_for('logout')}}">Sign Out</a></p>
+            <div class = "innerbox">
+                <h1 id="coursename"> {{courseData[0].Course}}</h1>
+                <p style = "font-size: 30px;text-align: left;"><a style = "text-decoration: none;color: rgba(195, 207, 226, 0.85);" href="{{url_for('teachersPage')}}"> &#11013;</a></p>
+                <!-- <h1> Course Name</h1> -->
+                <div>
+                    <table id = "gradesinfo">
+                        <thead></thead>
+                        <tr>
+                            <th>Student ID</th>
+                            <th>Student Name</th>
+                            <th>Grade</th>
+                        </tr>
+                        <tbody>
+                            {% for grade in grades %}
+                            <tr>
+                                <td>{{grade.Student_Id}}</td>
+                                <td>{{grade.Student}}</td>
+                                <td><a style = "text-decoration: none;color:white;" href="#edit"> {{grade.Grade}} </a></td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                            <!-- <tr>
+                                <td> Student 1</td>
+                                <td> 100 </td>
+                            </tr>
+                            <tr>
+                                <td> Student 2</td>
+                                <td> 99 </td>
+                            </tr>
+                            <tr>
+                                <td> Student 3</td>
+                                <td> 98 </td>
+                            </tr> -->
+                    </table>
+                    <div id = "edit">
+                        <br>
+                        <br>
+                        <h1> Edit Grades</h1>
+                        <br>
+                        <label> Enter Student Id:</label>
+                            <input type="number" id="editedstudent">
+                            <br>
+                            <br>
+                            <label> Enter New Grade:</label>
+                            <input type="text" id="editedgrade">
+                            <br>
+                            <br>
+                            <button class="button" type="button" onclick="PUT('{{ courseData[0].id }}')">Update Grade</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <script src="{{ url_for('static', filename='script/grades.js') }}"></script>
+    </body>
+</html>

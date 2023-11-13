@@ -25,6 +25,11 @@ login_manager.login_view = 'login'
 app.secret_key = 'keep it secret, keep it safe'
 
 
+@app.errorhandler(404)
+def page_not_found(e):
+    flash("Page Not Found")
+    return redirect(url_for("home"))
+
 @login_manager.unauthorized_handler
 def unauthorized():
     flash("You are not authenticated. Please login")
@@ -69,14 +74,17 @@ def login():
             # Use the login_user method to log in the user
             login_user(user)
             print("SUCCESS!!!")
+            print(user.role.name)
             if (user.role.name == "Student"):
                 return redirect(url_for('studentsPage'))
             elif (user.role.name == "Admin"):
                 return redirect("/admin")
+            elif (user.role.name == "Teacher"):
+                return redirect(url_for('teachersPage'))
         else:
             flash("Invalid username or password")
             print("INVALID!!!!!!!!!!!!!!")
-
+            return redirect(url_for("home"))
         # Redirect the user back to the home
         # (we'll create the home route in a moment)
     # return render_template("login.html")
@@ -98,6 +106,22 @@ def studentsPage():
     studentCourses = data2.json
     allCourses = data.json
     return render_template("students.html", studentCourses=studentCourses, allCourses=allCourses)
+
+@app.route("/teachers")
+@login_required
+def teachersPage():
+    data = getTeacherCourses(current_user.id)
+    teacherCourses = data.json
+    return render_template("teacher.html", courses=teacherCourses)
+
+@app.route("/courseGrades/<int:course_id>")
+@login_required
+def courseGradesPage(course_id):
+    data = getStudents(course_id)
+    data2 = getCourse(course_id)
+    courseData = data2.json
+    courseGrades = data.json  
+    return render_template("grades.html", grades=courseGrades, courseData=courseData)
 
 if __name__ == '__main__':
     app.run()

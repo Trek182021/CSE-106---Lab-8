@@ -1,0 +1,124 @@
+html{
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    padding-top: 25px;
+    padding-left: 25px;
+    padding-right:  25px;
+    padding-bottom: 25px;
+}
+
+div{
+    padding-top: 10px;
+    padding-right: 30px;
+    padding-left: 30px;
+    padding-bottom: 15px;
+    text-align: center;
+}
+
+div.outerbox{
+    background-color: rgba(195, 207, 226, 0.85);
+    padding-top: 10px;
+    padding-right: 30px;
+    padding-left: 30px;
+    padding-bottom: 15px;
+    border: 1px solid black;
+}
+
+div.innerbox{
+    background-color: rgba(39, 100, 180, 0.896);
+    padding-top: 5px;
+    padding-right: 40px;
+    padding-left: 40px;
+    padding-bottom: 30px;
+    display: inline-block;
+    color: white;
+}
+h1 {
+    font-size: 25px;
+    text-align: center;
+}
+
+table {
+    border: 1px solid black;
+    border-collapse: collapse;
+    margin-left: auto;
+    margin-right: auto;
+    padding-top: 10px;
+    padding-right: 20px;
+    padding-left: 20px;
+    padding-bottom: 10px;
+}
+
+th {
+    border: 1px solid white;
+    border-collapse: collapse;
+    background-color: #7badeee4;
+    margin-left: auto;
+    margin-right: auto;
+    padding-top: 10px;
+    padding-right: 20px;
+    padding-left: 20px;
+    padding-bottom: 10px;
+    color: white;
+}
+
+td {
+    border: 1px solid white;
+    border-collapse: collapse;
+    background-color: rgba(195, 207, 226, 0.85);
+    margin-left: auto;
+    margin-right: auto;
+    padding-top: 10px;
+    padding-right: 20px;
+    padding-left: 20px;
+    padding-bottom: 10px;
+}
+
+.hide {
+    color: transparent;
+    float:right;
+}
+
+.hide:hover {
+    font-size:small; 
+    color: blue;
+    float:right;
+  }
+
+.edit {
+    border:none;
+}
+
+p.arrow {
+    font-size: 500px;
+    text-align: left;
+}
+
+.button {
+    background-color: #7badeee4;
+    border: none;
+    color: white;
+    padding: 15px 32px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+}
+
+.button:hover {
+    background-color: rgba(195, 207, 226, 0.85);
+    color: white;
+}
+
+input[type=text], input[type=number] {
+    width: 100%;
+    padding: 12px 20px;
+    margin: 8px 0;
+    box-sizing: border-box;
+}
+
+input:focus{
+    outline: none;
+}
+
