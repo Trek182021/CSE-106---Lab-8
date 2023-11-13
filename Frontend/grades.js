@@ -1,7 +1,7 @@
 function GET(course_id) {
-    // var url = "http://127.0.0.1:5000/teacherCourses/2";
-    var url = "http://127.0.0.1:5000/courses/1";
-    // var url = "http://lodocus.pythonanywhere.com/courses/3";
+    var url = "http://127.0.0.1:5000/courseGrade/1";
+    // var url = "http://127.0.0.1:5000/courseGrade/1" + course_id;
+    // var url = "http://lodocus.pythonanywhere.com/courseGrade/" + course_id;
     var xhttp = new XMLHttpRequest();
     xhttp.open("GET", url, true);
     xhttp.onload= function() {
@@ -9,7 +9,7 @@ function GET(course_id) {
 
         var i;
         for(i = 0; i < rep.length; i++) {
-            // document.getElementById("namedisplay").innerHTML = `Welcome ${rep[i].Teacher}!`
+            document.getElementById("namedisplay").innerHTML = `Welcome ${rep[i].Teacher}!`
             document.getElementById("coursename").innerHTML = `${rep[i].Course}`
             document.getElementById("gradesinfo").innerHTML += `<tr><td>${rep[i].Student}</td><td><a style = "text-decoration: none;color:white;" href="#edit"> ${rep[i].Grade} </a></td></tr>`
         }
@@ -17,7 +17,7 @@ function GET(course_id) {
     xhttp.send();
 } 
 
-function PUT(course_id) {
+function PUT(course_id, user_id) {
     const promise = new Promise((resolve, reject) => {
         const xhttp = new XMLHttpRequest();
         const url = `http://127.0.0.1:5000/grades/${1}`;
@@ -26,10 +26,15 @@ function PUT(course_id) {
         xhttp.setRequestHeader("Content-Type", "application/json");
         // const body = {'Grade': grade};
         // const body = {'grade': eval(document.getElementById("editedgrade").value)};
+        // document.getElementById("coursename").innerHTML = `${course_id}`
         const body = {
             'grade' : eval(document.getElementById("editedgrade").value),
             'user_id': 1
         };
+        // const body = {
+        //     'grade' : eval(document.getElementById("editedgrade").value),
+        //     'user_id': user_id
+        // };
         xhttp.send(JSON.stringify(body));
         xhttp.onload = function() {
             resolve(xhttp.response);
